@@ -3,7 +3,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'crud_oop');
+define('DB_NAME', 'pos_db');
 
 class Connection
 {

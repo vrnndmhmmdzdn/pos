@@ -76,4 +76,16 @@ abstract class Model extends Connection implements ModelInterface
         }
         return $result;
     }
+    public function Search($keyword, $table)
+    {
+        $query = "SELECT * FROM $table $keyword";
+        $result = mysqli_query($this->db, $query);
+        return $this->Convert($result);
+    }
+    public function Paginate($limit, $start, $table)
+    {
+        $query = "SELECT * FROM $table LIMIT $limit,$start";
+        $result = mysqli_query($this->db, $query);
+        return $this->Convert($result);
+    }
 }
