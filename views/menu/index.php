@@ -1,15 +1,15 @@
 <?php
 require_once __DIR__ . "/../../Model/Model.php";
 require_once __DIR__ . "/../../Model/Items.php";
-$categories = new Items();
+$items = new Items();
 
 $limit = 2;
 $halAktif = (isset($_GET["page"])) ? $_GET["page"] : 1;
 $start = ($limit * $halAktif) - $limit;
-$length = count($categories->AllC());
+$length = count($items->AllC());
 $countPage = ceil($length / $limit);
 
-$categories = $categories->PaginateC($start, $limit);
+$items = $items->PaginateC($start, $limit);
 ?>
 
 <!DOCTYPE html>
@@ -89,7 +89,7 @@ $categories = $categories->PaginateC($start, $limit);
                                                     <th>ID</th>
                                                     <th>Waktu</th>
                                                 </tr>
-                                                <?php foreach ($categories as $category): ?>
+                                                <?php foreach ($items as $item): ?>
                                                     <tr>
                                                         <td class="p-0 text-center">
                                                             <div class="custom-checkbox custom-control">
@@ -97,15 +97,15 @@ $categories = $categories->PaginateC($start, $limit);
                                                                 <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
                                                             </div>
                                                         </td>
-                                                        <td><?= $category["name"] ?></td>
-                                                        <td><img src="../../public/img/items/<?= $category["attachment"] ?>" width="50"></td>
-                                                        <td><?= $category["price"] ?></td>
-                                                        <td><?= $category["category_id"] ?></td>
-                                                        <td><?= $category["created_at"] ?></td>
+                                                        <td><?= $item["name"] ?></td>
+                                                        <td><img src="../../public/img/items/<?= $item["attachment"] ?>" width="50"></td>
+                                                        <td><?= $item["price"] ?></td>
+                                                        <td><?= $item["category_id"] ?></td>
+                                                        <td><?= $item["created_at"] ?></td>
                                                         <td>
-                                                            <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-primary mr-2"><i class="fas fa-info-circle"></i></a>
-                                                            <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>
-                                                            <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i></a>
+                                                            <a href="index.php?id=<?= $item['id'] ?>" class="btn btn-primary mr-2"><i class="fas fa-info-circle"></i></a>
+                                                            <a href="index.php?id=<?= $item['id'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>
+                                                            <a href="index.php?id=<?= $item['id'] ?>" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i></a>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach ?>

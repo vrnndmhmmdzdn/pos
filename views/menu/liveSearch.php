@@ -21,6 +21,7 @@ $items = $items->SearchC($keyword);
             <th>Attachment</th>
             <th>Harga</th>
             <th>ID</th>
+            <th>Waktu</th>
         </tr>
         <?php foreach ($items as $item): ?>
             <tr>
@@ -34,6 +35,7 @@ $items = $items->SearchC($keyword);
                 <td><img src="../../public/img/items/<?= $item["attachment"] ?>" width="50"></td>
                 <td><?= $item["price"] ?></td>
                 <td><?= $item["category_id"] ?></td>
+                <td><?= $item["created_at"] ?></td>
                 <td>
                     <a href="index.php?id=<?= $item['id'] ?>" class="btn btn-primary mr-2"><i class="fas fa-info-circle"></i></a>
                     <a href="index.php?id=<?= $item['id'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>
@@ -42,5 +44,4 @@ $items = $items->SearchC($keyword);
             </tr>
         <?php endforeach ?>
     </table>
-</div>
 </div>
