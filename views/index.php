@@ -1,3 +1,10 @@
+<?php
+require_once __DIR__ . '/../Model/Model.php';
+require_once __DIR__ . '/../Model/Items.php';
+require_once __DIR__ . '/../Model/Category.php';
+$categories = new Category();
+$items = new Items();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,11 +78,11 @@
                                     </div>
                                     <div class="card-stats-items">
                                         <div class="card-stats-item">
-                                            <div class="card-stats-item-count">24</div>
+                                            <div class="card-stats-item-count"><?= count($categories->AllC()) ?></div>
                                             <div class="card-stats-item-label">Kategori</div>
                                         </div>
                                         <div class="card-stats-item">
-                                            <div class="card-stats-item-count">12</div>
+                                            <div class="card-stats-item-count"><?= count($items->AllC()) ?></div>
                                             <div class="card-stats-item-label">Menu</div>
                                         </div>
                                         <div class="card-stats-item">

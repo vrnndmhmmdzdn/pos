@@ -1,3 +1,24 @@
+<?php
+require_once __DIR__ . '/../../Model/Model.php';
+require_once __DIR__ . '/../../Model/Category.php';
+require_once __DIR__ . '/../../Model/Items.php';
+$categories = new Category();
+$categories = $categories->AllC();
+$menu = new Items();
+if (isset($_POST["submit"])) {
+    //var_dump($_POST);
+    $datas = [
+        "post" => $_POST,
+        "files" => $_FILES,
+    ];
+    $result = $menu->CreateC($datas);
+    if (gettype($result) == "string") {
+        echo "<script>alert(`{$result}`); window.location.href = 'create.php';</script>";
+    } else {
+        echo "<script>alert(`Berhasil ditambahkan`); window.location.href = 'create.php';</script>";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,7 +73,7 @@
                                     <div class="card-header">
                                         <h4>Kategori Baru</h4>
                                     </div>
-                                    <div class="card-body">
+                                    <form action="" method="post" enctype="multipart/form-data" class="card-body">
                                         <div class="form-group">
                                             <label>Nama Menu</label>
                                             <div class="input-group">
@@ -61,26 +82,23 @@
                                                         <i class="fas fa-user"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" class="form-control phone-number">
+                                                <input type="text" name="name" class="form-control phone-number">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label>Gambar</label>
                                             <div class="custom-file">
-                                                <input type="file" name="site_favicon" class="custom-file-input" id="site-favicon">
+                                                <input type="file" name="attachment" class="custom-file-input" id="site-favicon">
                                                 <label class="custom-file-label">Choose File</label>
                                             </div>
                                             <div class="form-text text-muted">The image must have a maximum size of 1MB</div>
                                         </div>
                                         <div class="form-group">
                                             <label>Pilih Kategori</label>
-                                            <select class="form-control selectric">
-                                                <option>Option 1</option>
-                                                <option>Option 2</option>
-                                                <option>Option 3</option>
-                                                <option>Option 4</option>
-                                                <option>Option 5</option>
-                                                <option>Option 6</option>
+                                            <select name="category_id" class="form-control selectric">
+                                                <?php foreach ($categories as $category): ?>
+                                                    <option value="<?= $category["id"] ?>"><?= $category["name"] ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -91,13 +109,13 @@
                                                         <i class="fas fa-money-bill"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" class="form-control phone-number">
+                                                <input name="price" type="text" class="form-control phone-number">
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-end">
-                                            <button class="btn btn-primary">Submit</button>
+                                            <button name="submit" class="btn btn-primary">Submit</button>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 col-lg-6">

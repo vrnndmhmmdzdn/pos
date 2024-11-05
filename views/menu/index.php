@@ -1,7 +1,17 @@
 <?php
 require_once __DIR__ . "/../../Model/Model.php";
 require_once __DIR__ . "/../../Model/Items.php";
+$categories = new Items();
+
+$limit = 2;
+$halAktif = (isset($_GET["page"])) ? $_GET["page"] : 1;
+$start = ($limit * $halAktif) - $limit;
+$length = count($categories->AllC());
+$countPage = ceil($length / $limit);
+
+$categories = $categories->PaginateC($start, $limit);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,130 +63,75 @@ require_once __DIR__ . "/../../Model/Items.php";
                                     <div class="card-header">
                                         <h4>Advanced Table</h4>
                                         <div class="card-header-form">
-                                            <form>
+                                            <form action="" method="post">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Search">
+                                                    <input type="text" id="search" name="search" class="form-control" placeholder="Search">
                                                     <div class="input-group-btn">
-                                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                                        <button class="btn btn-primary" id="search-btn" name="search-btn"><i class="fas fa-search"></i></button>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                     <div class="card-body p-0">
-                                        <div class="table-responsive">
+                                        <div id="content" class="table-responsive">
                                             <table class="table table-striped">
                                                 <tr>
                                                     <th>
-                                                        <div class="custom-checkbox custom-control">
+                                                        <!-- <div class="custom-checkbox custom-control">
                                                             <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input" id="checkbox-all">
                                                             <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
-                                                        </div>
+                                                        </div> -->
                                                     </th>
-                                                    <th>Task Name</th>
-                                                    <th>Progress</th>
-                                                    <th>Members</th>
-                                                    <th>Due Date</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
+                                                    <th>Nama</th>
+                                                    <th>Attachment</th>
+                                                    <th>Harga</th>
+                                                    <th>ID</th>
                                                 </tr>
-                                                <tr>
-                                                    <td class="p-0 text-center">
-                                                        <div class="custom-checkbox custom-control">
-                                                            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">
-                                                            <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Create a mobile app</td>
-                                                    <td class="align-middle">
-                                                        <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
-                                                            <div class="progress-bar bg-success" data-width="100"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-5.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Wildan Ahdian">
-                                                    </td>
-                                                    <td>2018-01-20</td>
-                                                    <td>
-                                                        <div class="badge badge-success">Completed</div>
-                                                    </td>
-                                                    <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="p-0 text-center">
-                                                        <div class="custom-checkbox custom-control">
-                                                            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-2">
-                                                            <label for="checkbox-2" class="custom-control-label">&nbsp;</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Redesign homepage</td>
-                                                    <td class="align-middle">
-                                                        <div class="progress" data-height="4" data-toggle="tooltip" title="0%">
-                                                            <div class="progress-bar" data-width="0"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Nur Alpiana">
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-3.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Hariono Yusup">
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-4.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Bagus Dwi Cahya">
-                                                    </td>
-                                                    <td>2018-04-10</td>
-                                                    <td>
-                                                        <div class="badge badge-info">Todo</div>
-                                                    </td>
-                                                    <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="p-0 text-center">
-                                                        <div class="custom-checkbox custom-control">
-                                                            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-3">
-                                                            <label for="checkbox-3" class="custom-control-label">&nbsp;</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Backup database</td>
-                                                    <td class="align-middle">
-                                                        <div class="progress" data-height="4" data-toggle="tooltip" title="70%">
-                                                            <div class="progress-bar bg-warning" data-width="70"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-2.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Hasan Basri">
-                                                    </td>
-                                                    <td>2018-01-29</td>
-                                                    <td>
-                                                        <div class="badge badge-warning">In Progress</div>
-                                                    </td>
-                                                    <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="p-0 text-center">
-                                                        <div class="custom-checkbox custom-control">
-                                                            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-4">
-                                                            <label for="checkbox-4" class="custom-control-label">&nbsp;</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Input data</td>
-                                                    <td class="align-middle">
-                                                        <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
-                                                            <div class="progress-bar bg-success" data-width="100"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-2.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-5.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Isnap Kiswandi">
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-4.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Yudi Nawawi">
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Khaerul Anwar">
-                                                    </td>
-                                                    <td>2018-01-16</td>
-                                                    <td>
-                                                        <div class="badge badge-success">Completed</div>
-                                                    </td>
-                                                    <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                                </tr>
+                                                <?php foreach ($categories as $category): ?>
+                                                    <tr>
+                                                        <td class="p-0 text-center">
+                                                            <div class="custom-checkbox custom-control">
+                                                                <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">
+                                                                <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
+                                                            </div>
+                                                        </td>
+                                                        <td><?= $category["name"] ?></td>
+                                                        <td><img src="../../public/img/items/<?= $category["attachment"] ?>" width="50"></td>
+                                                        <td><?= $category["price"] ?></td>
+                                                        <td><?= $category["category_id"] ?></td>
+                                                        <td>
+                                                            <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-primary mr-2"><i class="fas fa-info-circle"></i></a>
+                                                            <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>
+                                                            <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach ?>
                                             </table>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="card-body d-flex justify-content-end">
+                                    <nav aria-label="...">
+                                        <ul class="pagination">
+                                            <?php $prevDis = ($halAktif == 1) ? "disabled" : ""; ?>
+                                            <li class="page-item <?= $prevDis ?>">
+                                                <?php $prev = ($halAktif == 1) ? 1 : $halAktif - 1; ?>
+                                                <a class="page-link" href="?page=<?= $prev ?>" tabindex="-1">Previous</a>
+                                            </li>
+                                            <?php for ($i = 1; $i <= $countPage; $i++) : ?>
+                                                <?php $pageAktif = ($halAktif == $i) ? "btn-outline-primary" : ""; ?>
+                                                <li class="page-item">
+                                                    <a class="page-link <?= $pageAktif ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                                                </li>
+                                            <?php endfor ?>
+                                            <?php $nextDis = ($halAktif == $countPage) ? "disabled" : ""; ?>
+                                            <li class="page-item <?= $nextDis ?>">
+                                                <?php $next = ($halAktif == $countPage) ? $countPage : $halAktif + 1; ?>
+                                                <a class="page-link" href="?page=<?= $next ?>">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
@@ -206,6 +161,14 @@ require_once __DIR__ . "/../../Model/Items.php";
     <!-- Template JS File -->
     <script src="../../assets/js/scripts.js"></script>
     <script src="../../assets/js/custom.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#search').on('keyup', function() {
+                //console.log($("#search").val());
+                $("#content").load('liveSearch.php?search=' + $("#search").val())
+            });
+        });
+    </script>
 </body>
 
 </html>
