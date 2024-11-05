@@ -87,6 +87,7 @@ $categories = $categories->PaginateC($start, $limit);
                                                     <th>Attachment</th>
                                                     <th>Harga</th>
                                                     <th>ID</th>
+                                                    <th>Waktu</th>
                                                 </tr>
                                                 <?php foreach ($categories as $category): ?>
                                                     <tr>
@@ -100,6 +101,7 @@ $categories = $categories->PaginateC($start, $limit);
                                                         <td><img src="../../public/img/items/<?= $category["attachment"] ?>" width="50"></td>
                                                         <td><?= $category["price"] ?></td>
                                                         <td><?= $category["category_id"] ?></td>
+                                                        <td><?= $category["created_at"] ?></td>
                                                         <td>
                                                             <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-primary mr-2"><i class="fas fa-info-circle"></i></a>
                                                             <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>
