@@ -1,6 +1,19 @@
 <?php
 require_once __DIR__ . "/../../Model/Model.php";
 require_once __DIR__ . "/../../Model/Users.php";
+$user = new Users();
+$user_id = $_SESSION['user_id'];
+if (isset($_POST['change_password'])) {
+    if ($_POST['new_password'] !== $_POST['password-confirm']) {
+        echo "<script>alert('konfirmasi password salah') ;window.location.href = 'index.php'; </script>";
+    }
+    $result = $user->updatePassword($user_id, $_POST['old_password'], $_POST['new_password']);
+    if (gettype($result) === "string") {
+        echo "<script>alert('{$result}') ;window.location.href = 'index.php'; </script>";
+    } else {
+        echo "<script>alert('{$result['username']}') ;window.location.href = 'index.php'; </script>";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,14 +117,14 @@ require_once __DIR__ . "/../../Model/Users.php";
                                             <div class="row">
                                                 <div class="form-group col-md-6 col-12">
                                                     <label>First Name</label>
-                                                    <input type="text" class="form-control" value="Ujang" required="">
+                                                    <input type="text" class="form-control" required="">
                                                     <div class="invalid-feedback">
                                                         Please fill in the first name
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-6 col-12">
                                                     <label>Last Name</label>
-                                                    <input type="text" class="form-control" value="Maman" required="">
+                                                    <input type="text" class="form-control" required="">
                                                     <div class="invalid-feedback">
                                                         Please fill in the last name
                                                     </div>
@@ -120,14 +133,14 @@ require_once __DIR__ . "/../../Model/Users.php";
                                             <div class="row">
                                                 <div class="form-group col-md-7 col-12">
                                                     <label>Email</label>
-                                                    <input type="email" class="form-control" value="ujang@maman.com" required="">
+                                                    <input type="email" class="form-control" required="">
                                                     <div class="invalid-feedback">
                                                         Please fill in the email
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-5 col-12">
                                                     <label>Phone</label>
-                                                    <input type="tel" class="form-control" value="">
+                                                    <input type="tel" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -164,10 +177,10 @@ require_once __DIR__ . "/../../Model/Users.php";
                             </div>
 
                             <div class="card-body">
-                                <form method="POST">
+                                <form action="" method="POST">
                                     <div class="form-group">
                                         <label for="password">Password Lama</label>
-                                        <input id="password" type="password" class="form-control" name="email">
+                                        <input id="password" type="password" class="form-control" name="old_password">
                                         <div class="invalid-feedback">
                                         </div>
                                     </div>
@@ -175,7 +188,7 @@ require_once __DIR__ . "/../../Model/Users.php";
                                     <div class="row">
                                         <div class="form-group col-6">
                                             <label for="password" class="d-block">Password Baru</label>
-                                            <input id="password" type="password" class="form-control pwstrength" data-indicator="pwindicator" name="password">
+                                            <input id="password" type="password" class="form-control pwstrength" data-indicator="pwindicator" name="new_password">
                                             <div id="pwindicator" class="pwindicator">
                                                 <div class="bar"></div>
                                                 <div class="label"></div>
@@ -194,7 +207,7 @@ require_once __DIR__ . "/../../Model/Users.php";
                                     </div>
 
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                        <button type="submit" class="btn btn-primary btn-lg btn-block" name="change_password">
                                             Ganti Password
                                         </button>
                                     </div>

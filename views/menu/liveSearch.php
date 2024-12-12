@@ -22,6 +22,7 @@ $items = $items->SearchC($keyword);
             <th>Harga</th>
             <th>ID</th>
             <th>Waktu</th>
+            <th>Aksi</th>
         </tr>
         <?php foreach ($items as $item): ?>
             <tr>
@@ -31,7 +32,7 @@ $items = $items->SearchC($keyword);
                         <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
                     </div>
                 </td>
-                <td><?= $item["name"] ?></td>
+                <td><?= $item["category_name"] ?></td>
                 <td><img src="../../public/img/items/<?= $item["attachment"] ?>" width="50"></td>
                 <td><?= $item["price"] ?></td>
                 <td><?= $item["category_id"] ?></td>

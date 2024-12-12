@@ -14,19 +14,22 @@ class Category extends Model
     }
     public function DeleteC($id)
     {
-        return parent::Delete($id, $this->table);
+        $id_query = "WHERE category_id = $id";
+        return parent::Delete($id_query, $this->table);
     }
     public function UpdateC($id, $datas)
     {
-        return parent::Update($id, $datas, $this->table);
+        $id_query = "WHERE category_id = $id";
+        return parent::Update($id_query, $datas, $this->table);
     }
     public function FindC($id)
     {
-        return parent::Find($id, $this->table);
+        $id_query = "WHERE category_id = $id";
+        return parent::Find($id_query, $this->table);
     }
     public function SearchC($keyword)
     {
-        $keyword = "WHERE name LIKE '%{$keyword}%'";
+        $keyword = "WHERE category_name LIKE '%{$keyword}%'";
         return parent::Search($keyword, $this->table);
     }
     public function PaginateC($limit, $start)

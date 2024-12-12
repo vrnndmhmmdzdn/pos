@@ -2,20 +2,36 @@
 require_once __DIR__ . '/../../Model/Model.php';
 require_once __DIR__ . '/../../Model/Category.php';
 require_once __DIR__ . '/../../Model/Items.php';
+
+if (!isset($_SESSION['username'])) {
+    header("location: ../login.php");
+    exit;
+}
+
+$id = $_GET['id'];
+if (empty($id)) {
+    header("location: index.php");
+}
+
 $categories = new Category();
 $categories = $categories->AllC();
+
 $menu = new Items();
+$items_detail = $menu->FindC($id);
+// var_dump($items_detail);
+
 if (isset($_POST["submit"])) {
     //var_dump($_POST);
     $datas = [
         "post" => $_POST,
         "files" => $_FILES,
     ];
-    $result = $menu->CreateC($datas);
+
+    $result = $menu->UpdateC($id, $datas);
     if (gettype($result) == "string") {
-        echo "<script>alert(`{$result}`); window.location.href = 'index.php';</script>";
+        echo "<script>alert(`Gagal meng-update`); window.location.href = 'index.php';</script>";
     } else {
-        echo "<script>alert(`Berhasil ditambahkan`); window.location.href = 'index.php';</script>";
+        echo "<script>alert(`Data berhasil di-update`); window.location.href = 'index.php';</script>";
     }
 }
 ?>
@@ -82,22 +98,27 @@ if (isset($_POST["submit"])) {
                                                         <i class="fas fa-user"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" name="item_name" class="form-control phone-number">
+                                                <input type="text" name="name" class="form-control phone-number" value="<?= $items_detail[0]['item_name'] ?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label>Gambar</label>
+                                            <div class="costum-file mb-2">
+                                                <img src="../../public/img/items/<?= $items_detail[0]['attachment'] ?>" width="50">
+                                            </div>
                                             <div class="custom-file">
-                                                <input type="file" name="attachment" class="custom-file-input" id="site-favicon">
+                                                <input type="file" name="attachment" class="custom-file-input" id="site-favicon" value="<?= $items_detail[0]['attachment'] ?>">
                                                 <label class="custom-file-label">Choose File</label>
                                             </div>
                                             <div class="form-text text-muted">The image must have a maximum size of 1MB</div>
                                         </div>
                                         <div class="form-group">
                                             <label>Pilih Kategori</label>
-                                            <select name="item_category_id" class="form-control selectric">
+                                            <select id="category" name="item_category_id" class="form-control selectric">
                                                 <?php foreach ($categories as $category): ?>
-                                                    <option value="<?= $category["category_id"] ?>"><?= $category["category_name"] ?></option>
+                                                    <option value="<?= $category['category_id'] ?>" <?php echo ($category["category_id"] == $items_detail[0]["item_category_id"]) ? 'selected' : ''; ?>>
+                                                        <?= $category["category_name"] ?>
+                                                    </option>
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
@@ -109,7 +130,7 @@ if (isset($_POST["submit"])) {
                                                         <i class="fas fa-money-bill"></i>
                                                     </div>
                                                 </div>
-                                                <input name="price" type="text" class="form-control phone-number">
+                                                <input name="price" type="text" class="form-control phone-number" value="<?= $items_detail[0]['price'] ?>">
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-end">

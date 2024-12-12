@@ -3,6 +3,14 @@
 require_once __DIR__ . "/../../Model/Model.php";
 require_once __DIR__ . "/../../Model/Category.php";
 
+$id = $_GET['id'];
+if (empty($id)) {
+    header("location: index.php");
+}
+
+$categories = new Category();
+$category_detail = $categories->FindC($id);
+
 if (isset($_POST["button"])) {
     $category = ["category_name" => $_POST["input"]];
     if (strlen($_POST["input"]) > 225) {
@@ -12,12 +20,12 @@ if (isset($_POST["button"])) {
     }
 
     $categories = new Category();
-    $result = $categories->CreateC($category);
+    $result = $categories->UpdateC($id, $category);
     if ($result !== false) {
-        echo "<script>alert(`Kategori {$result['category_name']} telah di tambahkan`) ; 
+        echo "<script>alert(`Kategori berhasil di update`) ; 
         window.location.href = 'index.php';</script>";
     } else {
-        echo "<script>alert(`Gagal menambahkan data!`) ; 
+        echo "<script>alert(`Update gagal!`) ; 
         window.location.href = 'index.php';</script>";
     }
     var_dump($result);
@@ -66,17 +74,17 @@ if (isset($_POST["button"])) {
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Tambah Kategori</h1>
+                        <h1>Edit Kategori</h1>
                     </div>
                     <div class="section-body">
-                        <h2 class="section-title">Form Kategori</h2>
+                        <h2 class="section-title">Form Edit</h2>
                         <p class="section-lead">Masukkanlah nama ke dalam input untuk menambah kategori baru</p>
 
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-6">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Kategori Baru</h4>
+                                        <h4>Edit Kategori</h4>
                                     </div>
                                     <form action="" method="post" class="card-body">
                                         <div class="form-group">
@@ -87,7 +95,7 @@ if (isset($_POST["button"])) {
                                                         <i class="fas fa-user"></i>
                                                     </div>
                                                 </div>
-                                                <input name="input" type="text" class="form-control phone-number" required>
+                                                <input name="input" type="text" value="<?= $category_detail[0]["category_name"] ?>" class="form-control phone-number" required>
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-end">

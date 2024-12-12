@@ -29,6 +29,7 @@ $categories = $categories->PaginateC($start, $limit);
     <!-- Template CSS -->
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="../../assets/modules/prism/prism.css">
     <!-- Start GA -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
     <script>
@@ -94,11 +95,18 @@ $categories = $categories->PaginateC($start, $limit);
                                                                 <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
                                                             </div>
                                                         </td>
-                                                        <td><?= $category["name"] ?></td>
+                                                        <td><?= $category["category_name"] ?></td>
                                                         <td>
-                                                            <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-primary mr-2"><i class="fas fa-info-circle"></i></a>
-                                                            <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>
-                                                            <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i></a>
+
+                                                            <button class="btn btn-primary mr-2" onclick="modalDetail(<?= $category['category_id'] ?> , '<?= $category['category_name'] ?>')">
+                                                                <i class="fas fa-info-circle"></i>
+                                                            </button>
+                                                            <a href="edit.php?id=<?= $category['category_id'] ?>" class="btn btn-success mr-2">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                            <a href="../../service/delete.php?id=<?= $category['category_id'] ?>" class="btn btn-danger mr-2">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach ?>
@@ -138,6 +146,25 @@ $categories = $categories->PaginateC($start, $limit);
             </div>
             <?php include "../../components/layout/footer.php" ?>
         </div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="detailModel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Info Lengkap</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- <p>Modal body text goes here.</p> -->
+                    </div>
+                    <div class="modal-footer bg-whitesmoke br">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- General JS Scripts -->
@@ -150,8 +177,9 @@ $categories = $categories->PaginateC($start, $limit);
     <script src="../../assets/js/stisla.js"></script>
 
     <!-- JS Libraies -->
-
+    <script src="../../assets/modules/prism/prism.js"></script>
     <!-- Page Specific JS File -->
+    <script src="../../assets/js/page/bootstrap-modal.js"></script>
 
     <!-- Template JS File -->
     <script src="../../assets/js/scripts.js"></script>
@@ -163,6 +191,16 @@ $categories = $categories->PaginateC($start, $limit);
                 $("#content").load('liveSearch.php?search=' + $("#search").val())
             });
         });
+
+        function modalDetail(id, name) {
+            $('#detailModel .model').empty();
+            let content = '<ul>';
+            content += `<li><strong>ID Kategori : </strong> ${id} </li>`;
+            content += `<li><strong>Nama Kategori : </strong> ${name} </li>`;
+            content += '</ul>';
+            $('#detailModel .modal-body').html(content);
+            $('#detailModel').modal('show');
+        }
     </script>
 </body>
 

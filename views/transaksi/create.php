@@ -1,3 +1,9 @@
+<?php
+require_once __DIR__ . "/../../Model/Model.php";
+require_once __DIR__ . "/../../Model/Items.php";
+$items = new Items();
+$items = $items->AllC();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,6 +34,18 @@
         gtag('config', 'UA-94034622-3');
     </script>
     <!-- /END GA -->
+    <script>
+        const itemsSelected = [{}];
+        itemsSelected = [{}];
+
+        function addItem(idItem, quantity = 1) {
+            itemsSelected.push({
+                id: idItem,
+                q: quantity
+            })
+            alert(itemsSelected.map(item => item.id))
+        }
+    </script>
 </head>
 
 <body>
@@ -50,6 +68,11 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <h4>Kategori Baru</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <script>
+                                            itemsSelected
+                                        </script>
                                     </div>
                                     <div class="card-body">
                                         <div class="form-group">
@@ -89,31 +112,17 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 col-lg-6 p-2 d-flex justify-content-center align-items-center">
-                                <div class="row g-0">
-                                    <div class="p-2 rounded overflow-hidden m-0 col-6 h-fit position-relative">
-                                        <span class="position-absolute top-0 mt-1 ml-1 start-100 translate-middle badge rounded-pill  bg-primary text-white">+1</span>
-                                        <img alt="image" src="../../assets/img/rendang.jpg" class="img-fluid">
-                                        <h5 class="m-0">Rendang Apa aja</h5>
-                                        <p class="m-0">10.000</p>
-                                    </div>
-                                    <div class="p-2 rounded overflow-hidden m-0 col-6 h-fit position-relative">
-                                        <span class="position-absolute top-0 mt-1 ml-1 start-100 translate-middle badge rounded-pill  bg-primary text-white">+1</span>
-                                        <img alt="image" src="../../assets/img/rendang.jpg" class="img-fluid">
-                                        <h5 class="m-0">Rendang Apa aja</h5>
-                                        <p class="m-0">10.000</p>
-                                    </div>
-                                    <div class="p-2 rounded overflow-hidden m-0 col-6 h-fit position-relative">
-                                        <span class="position-absolute top-0 mt-1 ml-1 start-100 translate-middle badge rounded-pill  bg-primary text-white">+1</span>
-                                        <img alt="image" src="../../assets/img/rendang.jpg" class="img-fluid">
-                                        <h5 class="m-0">Rendang Apa aja</h5>
-                                        <p class="m-0">10.000</p>
-                                    </div>
-                                    <div class="p-2 rounded overflow-hidden m-0 col-6 h-fit position-relative">
-                                        <span class="position-absolute top-0 mt-1 ml-1 start-100 translate-middle badge rounded-pill  bg-primary text-white">+1</span>
-                                        <img alt="image" src="../../assets/img/rendang.jpg" class="img-fluid">
-                                        <h5 class="m-0">Rendang Apa aja</h5>
-                                        <p class="m-0">10.000</p>
-                                    </div>
+                                <div class="row">
+                                    <?php foreach ($items as $item): ?>
+                                        <button onclick="addItem(<?= $item['item_id'] ?>)" class="p-2 border-0 shadow rounded overflow-hidden m-0 col-6 h-fit position-relative">
+                                            <span class="position-absolute top-0 mt-1 ml-1 start-100 translate-middle badge rounded-pill bg-primary text-white">+1</span>
+                                            <div class="ratio ratio-16x9 rounded" style="overflow: hidden; height: 160px;width: auto; ">
+                                                <img alt="image" src="../../public/img/items/<?= $item['attachment'] ?>" class="img-fluid" style="object-fit: cover; ">
+                                            </div>
+                                            <h5 class="m-0"><?= $item['item_name'] ?></h5>
+                                            <p class="m-0 text-success"><?= $item['price'] ?></p>
+                                        </button>
+                                    <?php endforeach ?>
                                 </div>
                             </div>
                         </div>

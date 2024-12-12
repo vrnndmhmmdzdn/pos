@@ -9,7 +9,7 @@ $start = ($limit * $halAktif) - $limit;
 $length = count($items->AllC());
 $countPage = ceil($length / $limit);
 
-$items = $items->PaginateC($start, $limit);
+$items = $items->AllPaginate($start, $limit);
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +25,7 @@ $items = $items->PaginateC($start, $limit);
     <link rel="stylesheet" href="../../assets/modules/fontawesome/css/all.min.css">
 
     <!-- CSS Libraries -->
-
+    <link rel="stylesheet" href="../../assets/modules/prism/prism.css">
     <!-- Template CSS -->
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/components.css">
@@ -86,8 +86,8 @@ $items = $items->PaginateC($start, $limit);
                                                     <th>Nama</th>
                                                     <th>Attachment</th>
                                                     <th>Harga</th>
-                                                    <th>ID</th>
-                                                    <th>Waktu</th>
+                                                    <th>Nama Kategori</th>
+                                                    <th>Aksi</th>
                                                 </tr>
                                                 <?php foreach ($items as $item): ?>
                                                     <tr>
@@ -97,15 +97,16 @@ $items = $items->PaginateC($start, $limit);
                                                                 <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
                                                             </div>
                                                         </td>
-                                                        <td><?= $item["name"] ?></td>
-                                                        <td><img src="../../public/img/items/<?= $item["attachment"] ?>" width="50"></td>
-                                                        <td><?= $item["price"] ?></td>
-                                                        <td><?= $item["category_id"] ?></td>
-                                                        <td><?= $item["created_at"] ?></td>
+                                                        <td><?= $item["item_name"] ?></td>
                                                         <td>
-                                                            <a href="index.php?id=<?= $item['id'] ?>" class="btn btn-primary mr-2"><i class="fas fa-info-circle"></i></a>
-                                                            <a href="index.php?id=<?= $item['id'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>
-                                                            <a href="index.php?id=<?= $item['id'] ?>" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i></a>
+                                                            <img src="../../public/img/items/<?= $item["attachment"] ?>" height="50" width="50" class="object-fit-fill">
+                                                        </td>
+                                                        <td><?= $item["price"] ?></td>
+                                                        <td><?= $item["category_name"] ?></td>
+                                                        <td>
+                                                            <button onclick="modalDetail(<?= $item['item_id'] ?> , '<?= $item['item_name'] ?>','<?= $item['attachment'] ?>','<?= $item['price'] ?>','<?= $item['category_name'] ?>','<?= $item['item_created_at'] ?>',)" class="btn btn-primary mr-2"><i class="fas fa-info-circle"></i></button>
+                                                            <a href="edit.php?id=<?= $item['item_id'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>
+                                                            <a href="delete.php?id=<?= $item['item_id'] ?>" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i></a>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach ?>
@@ -146,6 +147,25 @@ $items = $items->PaginateC($start, $limit);
             <?php include "../../components/layout/footer.php" ?>
         </div>
     </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="detailModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Info Lengkap</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <p>Modal body text goes here.</p> -->
+                </div>
+                <div class="modal-footer bg-whitesmoke br">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- General JS Scripts -->
     <script src="../../assets/modules/jquery.min.js"></script>
@@ -157,8 +177,9 @@ $items = $items->PaginateC($start, $limit);
     <script src="../../assets/js/stisla.js"></script>
 
     <!-- JS Libraies -->
-
+    <script src="../../assets/modules/prism/prism.js"></script>
     <!-- Page Specific JS File -->
+    <script src="../../assets/js/page/bootstrap-modal.js"></script>
 
     <!-- Template JS File -->
     <script src="../../assets/js/scripts.js"></script>
@@ -166,10 +187,23 @@ $items = $items->PaginateC($start, $limit);
     <script>
         $(document).ready(function() {
             $('#search').on('keyup', function() {
-                //console.log($("#search").val());
                 $("#content").load('liveSearch.php?search=' + $("#search").val())
             });
         });
+
+        function modalDetail(id, name, attachment, price, kategori, created) {
+            $('#detailModel .model').empty();
+            let content = '<ul>';
+            content += `<li><strong>ID Kategori : </strong> ${id} </li>`;
+            content += `<li><strong>Nama Kategori : </strong> ${name} </li>`;
+            content += `<li><strong>Gambar : </strong><br><img width="50" src="../../public/img/items/${attachment}" >  </li>`;
+            content += `<li><strong>Harga : </strong> ${price} </li>`;
+            content += `<li><strong>Jenis Kategori : </strong> ${kategori} </li>`;
+            content += `<li><strong>Dibuat Pada : </strong> ${created} </li>`;
+            content += '</ul>';
+            $('#detailModel .modal-body').html(content);
+            $('#detailModel').modal('show');
+        }
     </script>
 </body>
 

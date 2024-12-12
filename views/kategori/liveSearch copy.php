@@ -28,7 +28,7 @@ $categories = $categories->SearchC($keyword);
                         <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
                     </div>
                 </td>
-                <td><?= $category["name"] ?></td>
+                <td><?= $category["category_name"] ?></td>
                 <td>
                     <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-primary mr-2"><i class="fas fa-info-circle"></i></a>
                     <a href="index.php?id=<?= $category['id'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>

@@ -1,3 +1,15 @@
+<?php
+require_once __DIR__ . "/../../Model/Users.php";
+if (isset($_POST['logout'])) {
+    $logout = new Users();
+    $logout->Logout();
+    if ($logout) {
+        echo "<script>alert('Anda telah keluar')</script>";
+        header("location: ../login.php");
+        exit;
+    }
+}
+?>
 <div class="navbar-bg"></div>
 <nav class="navbar navbar-expand-lg main-navbar">
     <form class="form-inline mr-auto">
@@ -195,8 +207,8 @@
             </div>
         </li>
         <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                <img alt="image" src="../../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-                <div class="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div>
+                <img alt="image" src="../../public/img/users/<?= $_SESSION['avatar'] ?>" class="rounded-circle mr-1">
+                <div class="d-sm-none d-lg-inline-block">Hi, <?= $_SESSION['username'] ?></div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-title">Logged in 5 min ago</div>
@@ -210,8 +222,11 @@
                     <i class="fas fa-cog"></i> Settings
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item has-icon text-danger">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+                <a class="dropdown-item has-icon text-danger">
+                    <!-- <i class="fas fa-sign-out-alt"></i> Logout -->
+                    <form action="" method="post">
+                        <button name="logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    </form>
                 </a>
             </div>
         </li>

@@ -2,6 +2,10 @@
 require_once __DIR__ . '/../Model/Model.php';
 require_once __DIR__ . '/../Model/Items.php';
 require_once __DIR__ . '/../Model/Category.php';
+if (!isset($_SESSION['username'])) {
+    header("location: login.php");
+    exit;
+}
 $categories = new Category();
 $items = new Items();
 ?>

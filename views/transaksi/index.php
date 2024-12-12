@@ -1,3 +1,17 @@
+<?php
+require_once __DIR__ . "/../../Model/Model.php";
+require_once __DIR__ . "/../../Model/Sale.php";
+$sales = new Sale();
+
+$limit = 2;
+$halAktif = (isset($_GET["page"])) ? $_GET["page"] : 1;
+$start = ($limit * $halAktif) - $limit;
+$length = count($sales->AllC());
+$countPage = ceil($length / $limit);
+
+$sales = $sales->All2C(0, 2);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +25,7 @@
     <link rel="stylesheet" href="../../assets/modules/fontawesome/css/all.min.css">
 
     <!-- CSS Libraries -->
-
+    <link rel="stylesheet" href="../../assets/modules/prism/prism.css">
     <!-- Template CSS -->
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/components.css">
@@ -49,130 +63,77 @@
                                     <div class="card-header">
                                         <h4>Advanced Table</h4>
                                         <div class="card-header-form">
-                                            <form>
+                                            <form action="" method="post">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Search">
+                                                    <input type="text" id="search" name="search" class="form-control" placeholder="Search">
                                                     <div class="input-group-btn">
-                                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                                        <button class="btn btn-primary" id="search-btn" name="search-btn"><i class="fas fa-search"></i></button>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                     <div class="card-body p-0">
-                                        <div class="table-responsive">
+                                        <div id="content" class="table-responsive">
                                             <table class="table table-striped">
                                                 <tr>
                                                     <th>
-                                                        <div class="custom-checkbox custom-control">
+                                                        <!-- <div class="custom-checkbox custom-control">
                                                             <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input" id="checkbox-all">
                                                             <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
-                                                        </div>
+                                                        </div> -->
                                                     </th>
-                                                    <th>Task Name</th>
-                                                    <th>Progress</th>
-                                                    <th>Members</th>
-                                                    <th>Due Date</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
+                                                    <th>Nama Customer</th>
+                                                    <th>Catatan</th>
+                                                    <th>Status Pembayaran</th>
+                                                    <th>Jumlah</th>
+                                                    <th>User</th>
                                                 </tr>
-                                                <tr>
-                                                    <td class="p-0 text-center">
-                                                        <div class="custom-checkbox custom-control">
-                                                            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">
-                                                            <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Create a mobile app</td>
-                                                    <td class="align-middle">
-                                                        <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
-                                                            <div class="progress-bar bg-success" data-width="100"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-5.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Wildan Ahdian">
-                                                    </td>
-                                                    <td>2018-01-20</td>
-                                                    <td>
-                                                        <div class="badge badge-success">Completed</div>
-                                                    </td>
-                                                    <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="p-0 text-center">
-                                                        <div class="custom-checkbox custom-control">
-                                                            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-2">
-                                                            <label for="checkbox-2" class="custom-control-label">&nbsp;</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Redesign homepage</td>
-                                                    <td class="align-middle">
-                                                        <div class="progress" data-height="4" data-toggle="tooltip" title="0%">
-                                                            <div class="progress-bar" data-width="0"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Nur Alpiana">
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-3.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Hariono Yusup">
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-4.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Bagus Dwi Cahya">
-                                                    </td>
-                                                    <td>2018-04-10</td>
-                                                    <td>
-                                                        <div class="badge badge-info">Todo</div>
-                                                    </td>
-                                                    <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="p-0 text-center">
-                                                        <div class="custom-checkbox custom-control">
-                                                            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-3">
-                                                            <label for="checkbox-3" class="custom-control-label">&nbsp;</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Backup database</td>
-                                                    <td class="align-middle">
-                                                        <div class="progress" data-height="4" data-toggle="tooltip" title="70%">
-                                                            <div class="progress-bar bg-warning" data-width="70"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-2.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Hasan Basri">
-                                                    </td>
-                                                    <td>2018-01-29</td>
-                                                    <td>
-                                                        <div class="badge badge-warning">In Progress</div>
-                                                    </td>
-                                                    <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="p-0 text-center">
-                                                        <div class="custom-checkbox custom-control">
-                                                            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-4">
-                                                            <label for="checkbox-4" class="custom-control-label">&nbsp;</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Input data</td>
-                                                    <td class="align-middle">
-                                                        <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
-                                                            <div class="progress-bar bg-success" data-width="100"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-2.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-5.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Isnap Kiswandi">
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-4.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Yudi Nawawi">
-                                                        <img alt="image" src="../../assets/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Khaerul Anwar">
-                                                    </td>
-                                                    <td>2018-01-16</td>
-                                                    <td>
-                                                        <div class="badge badge-success">Completed</div>
-                                                    </td>
-                                                    <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                                </tr>
+                                                <?php foreach ($sales as $sale): ?>
+                                                    <tr>
+                                                        <td class="p-0 text-center">
+                                                            <div class="custom-checkbox custom-control">
+                                                                <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">
+                                                                <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
+                                                            </div>
+                                                        </td>
+                                                        <td><?= $sale["customer_name"] ?></td>
+
+                                                        <td><?= $sale["note"] ?></td>
+                                                        <td><?= $sale["status"] ?></td>
+                                                        <td><?= $sale["amount"] ?></td>
+                                                        <td>
+                                                            <button onclick="modalDetail(<?= $sale['sale_id'] ?>,'<?= $sale['costumer_name'] ?>','<?= $sale['note'] ?>','<?= $sale['status'] ?>','<?= $sale['amount'] ?>','<?= $sale['sale_created_at'] ?>')" class="btn btn-primary mr-2"><i class="fas fa-info-circle"></i></button>
+                                                            <a href="edit.php?id=<?= $sale['item_id'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>
+                                                            <a href="delete.php?id=<?= $sale['item_id'] ?>" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach ?>
                                             </table>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="card-body d-flex justify-content-end">
+                                    <nav aria-label="...">
+                                        <ul class="pagination">
+                                            <?php $prevDis = ($halAktif == 1) ? "disabled" : ""; ?>
+                                            <li class="page-item <?= $prevDis ?>">
+                                                <?php $prev = ($halAktif == 1) ? 1 : $halAktif - 1; ?>
+                                                <a class="page-link" href="?page=<?= $prev ?>" tabindex="-1">Previous</a>
+                                            </li>
+                                            <?php for ($i = 1; $i <= $countPage; $i++) : ?>
+                                                <?php $pageAktif = ($halAktif == $i) ? "btn-outline-primary" : ""; ?>
+                                                <li class="page-item">
+                                                    <a class="page-link <?= $pageAktif ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                                                </li>
+                                            <?php endfor ?>
+                                            <?php $nextDis = ($halAktif == $countPage) ? "disabled" : ""; ?>
+                                            <li class="page-item <?= $nextDis ?>">
+                                                <?php $next = ($halAktif == $countPage) ? $countPage : $halAktif + 1; ?>
+                                                <a class="page-link" href="?page=<?= $next ?>">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
@@ -183,6 +144,25 @@
                 </section>
             </div>
             <?php include "../../components/layout/footer.php" ?>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="detailModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Info Lengkap</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <p>Modal body text goes here.</p> -->
+                </div>
+                <div class="modal-footer bg-whitesmoke br">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -196,12 +176,34 @@
     <script src="../../assets/js/stisla.js"></script>
 
     <!-- JS Libraies -->
-
+    <script src="../../assets/modules/prism/prism.js"></script>
     <!-- Page Specific JS File -->
+    <script src="../../assets/js/page/bootstrap-modal.js"></script>
 
     <!-- Template JS File -->
     <script src="../../assets/js/scripts.js"></script>
     <script src="../../assets/js/custom.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#search').on('keyup', function() {
+                $("#content").load('liveSearch.php?search=' + $("#search").val())
+            });
+        });
+
+        function modalDetail(id, name, note, status, amount, created) {
+            $('#detailModel .model').empty();
+            let content = '<ul>';
+            content += `<li><strong>ID Kategori : </strong> ${id} </li>`;
+            content += `<li><strong>Nama Kategori : </strong> ${name} </li>`;
+            content += `<li><strong>Harga : </strong> ${note} </li>`;
+            content += `<li><strong>Jenis Kategori : </strong> ${status} </li>`;
+            content += `<li><strong>Dibuat Pada : </strong> ${amount} </li>`;
+            content += `<li><strong>Dibuat Pada : </strong> ${created} </li>`;
+            content += '</ul>';
+            $('#detailModel .modal-body').html(content);
+            $('#detailModel').modal('show');
+        }
+    </script>
 </body>
 
 </html>
